@@ -8,7 +8,7 @@ mp_hands = mp.solutions.hands
 mp_draw = mp.solutions.drawing_utils
 
 LABELS =  list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-SAMPLES_PER_LABEL = 50
+SAMPLES_PER_LABEL = 20
 
 def extract_landmarks(hand_landmarks):
     landmarks = []
@@ -42,3 +42,18 @@ def collect():
                 key = cv2.waitKey(1)
                 if key == 32: # spacebar
                     break
+
+                count = 0
+                while count < SAMPLES_PER_LABEL:
+                    ret, frame = cap.read()
+                    frame = cv2.flip(frame, 1)
+                    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    result = hands.process(rgb)
+                
+                    if result.multi_hand_landmarks:
+                        hand = result.multi_hand_landmarks[0]
+                        mp_draw.draw_landmarks(frame, hand, mp_hands.HAND_CONNECTIONS)
+                        features = extract_landmarks(hand)
+                        all_data.append(features)
+                        all_labels.append(label)
+                        count += 1
