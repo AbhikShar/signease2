@@ -57,3 +57,7 @@ def collect():
                         all_data.append(features)
                         all_labels.append(label)
                         count += 1
+
+    os.makedirs("data", exist_ok=True)
+    with open("data/dataset.pkl", "wb") as f:
+        pickle.dump({"data": np.array(all_data), "labels": all_labels}, f)
