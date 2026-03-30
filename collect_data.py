@@ -28,4 +28,17 @@ def collect():
 
     with mp_hands.Hands(
         static_image_mode = False,
-    )
+        max_num_hands = 1,
+        min_detection_confidence = 0.7
+    ) as hands:
+        
+        for label in LABELS:
+            # Wait for spacebar
+            while True:
+                ret, frame = cap.read()
+                frame = cv2.flip(frame, 1)
+                cv2.putText(frame, f"Next: {label} - Press SPACE", (30, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2) 
+                cv2.imshow("Collect Data", frame)
+                key = cv2.waitKey(1)
+                if key == 32: # spacebar
+                    break
