@@ -30,7 +30,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print(f"Train: {len(X_train)} | Test: {len(X_test)}")
 
-# ---- Train Random Forest ----
+#  Train Random Forest 
 print("Training model...")
 model = RandomForestClassifier(
     n_estimators=200, # Build 200 decision trees.
@@ -44,20 +44,14 @@ model = RandomForestClassifier(
     n_jobs=-1 # Use all available CPU cores in parallel.
 )
 
-model.fit(X_train, y_train)
-# This is the entire training step.
-# Each tree:
-# 1. Gets a random bootstrap sample of training data (sampling with replacement)
-# 2. At each split, considers a random subset of features
-# The randomness makes trees diverse, which is what makes the ensemble powerful.
+model.fit(X_train, y_train) # the magic command, the model looks at the coordinates and leanrs patterns.
+y_pred = model.predict(X_test) # the model is given coordinates from the 20% test, and the ans is stored in y_pred
 
-
-y_pred = model.predict(X_test)
-acc = accuracy_score(y_test, y_pred)
-print(f"\nAccuracy: {acc * 100:.2f}%")
+acc = accuracy_score(y_test, y_pred) # % of letters it got right
+print(f"\nAccuracy: {acc * 100:.2f}%") 
 
 print("\nPer-letter breakdown:")
-print(classification_report(y_test, y_pred))
+print(classification_report(y_test, y_pred)) # depper breakdown, tells where the model is struggling letter wise
 
 
 # Confusion matrix 
@@ -81,7 +75,7 @@ plt.tight_layout()
 plt.savefig('confusion_matrix.png', dpi=150)
 print("Confusion matrix saved to confusion_matrix.png")
 
-# Save model
+# save the model, this is the trained brain
 with open("model.pkl", "wb") as f:
     pickle.dump(model, f)
 print("Model saved to model.pkl")
