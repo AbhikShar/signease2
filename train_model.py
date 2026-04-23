@@ -51,23 +51,18 @@ model.fit(X_train, y_train)
 # 2. At each split, considers a random subset of features
 # The randomness makes trees diverse, which is what makes the ensemble powerful.
 
-# ---- Evaluate ----
+
 y_pred = model.predict(X_test)
 acc = accuracy_score(y_test, y_pred)
 print(f"\nAccuracy: {acc * 100:.2f}%")
 
 print("\nPer-letter breakdown:")
 print(classification_report(y_test, y_pred))
-# For each letter, shows:
-# Precision: of everything predicted as A, what fraction was actually A
-# Recall: of all actual As, what fraction did the model find
-# F1: harmonic mean of precision and recall
-# Pay attention to which letters score low — those are your hard cases
 
-# ---- Confusion matrix ----
+
+# Confusion matrix 
 # A 26x26 grid. Row = true label, Column = predicted label.
 # Diagonal = correct. Off-diagonal = mistakes.
-# If cell (A, S) is high, the model confuses A with S — they look similar in landmark space.
 cm = confusion_matrix(y_test, y_pred, labels=list("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
 
 plt.figure(figsize=(16, 14))
@@ -86,7 +81,7 @@ plt.tight_layout()
 plt.savefig('confusion_matrix.png', dpi=150)
 print("Confusion matrix saved to confusion_matrix.png")
 
-# ---- Save model ----
+# Save model
 with open("model.pkl", "wb") as f:
     pickle.dump(model, f)
 print("Model saved to model.pkl")
